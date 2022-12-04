@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+from sqlalchemy import create_engine
+from sqlalchemy import MetaData
+from sqlalchemy import Table, Column
+from sqlalchemy import Integer, String
+from sqlalchemy import sql, select, join, desc
+
+# Create a Engine object which is our handle into the database.
+engine = create_engine('sqlite:////blue/bsc4452/share/Class_Files/data/world.sqlite')
+
+# Connect to the database
+conn = engine.connect()
+
+# Read the metadata from the existing database.
+#  Since the database already exists and has tables defined, we can create Python objects based on these automatically.
+DBInfo=MetaData(engine)
+
+# Auto-create the country object based on the metadata read into the DBInfo.
+country=Table('country', DBInfo, autoload=True)
+
+# Mirroring this command: SELECT Code, Name, Population, Life Expectancy FROM country;
+query=select([country.c.Code, country.c.Name, country.c.Population, country.c.LifeExpectancy])
+result = conn.execute(query)
+for row in result:
+    print(row)
+    
+print(type(query))
+
+# Auto-create the city object based on the metadata read into the DBInfo.
+city=Table('city', DBInfo, autoload=True)
+
+# Mirroring this command: SELECT Name, Country Code, Population FROM city;
+query=select([city.c.Name, city.c.CountryCode, city.c.Population])
+result = conn.execute(query)
+for row in result:
+    print(row)
+    
+print(type(query))
+
+# Mirroring this command:
+# SELECT Name,Population,Life Expectancy FROM city JOIN country ON CountryCode=Code ORDER BY Life Expectancy DESC;
+
+city=Table('city', DBInfo, autoload=True)
+country=Table('country', DBInfo, autoload=True)
+
+print(select([city.c.Name, city.c.Population, country.c.LifeExpectancy])\
+      .select_from(city.join(country))\
+      .order_by(desc(country.c.LifeExpectancy)))
+
+query=(select([city.c.Name, city.c.Population, country.c.LifeExpectancy])\
+      .select_from(city.join(country))\
+      .order_by(desc(country.c.LifeExpectancy)))
+result = conn.execute(query)
+for row in result:
+    print(row)
+   
