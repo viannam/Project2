@@ -11,6 +11,8 @@ The Common Speakers file has a function that queries the countries by language. 
 
 The Country and City script generates a list of country names with assoicated code, population, and life expectancy from Country table; a list of city names with associated country code and population from City table; and then joins Country and City tables using Country Code from City table and Code from Country table to generate a list of city names with associated population and life expectancy. This is listed in descending order of life expectancy.  
 
+The Life Expentancy and Language script includes a selection of query data of the countries with a life expectancy greater than 80 years old which returns 5 different countries from the "world" database. This table is then joined with the countrylanguage table to include the main language of that country. Then a pandas as pd is done to create a table that organizes this join. 
+
 Hope this can be useful to you,
 
 Please, feel free to contact us regarding this project
