@@ -9,6 +9,8 @@ The Continent Information script contains a function that provides a summary of 
 
 The Common Speakers file has a function that queries the countries by language. The user can enter a known language and the script will return the countries where the user can travel.
 
+The Country and City script generates a list of country names with assoicated code, population, and life expectancy from Country table; a list of city names with associated country code and population from City table; and then joins Country and City tables using Country Code from City table and Code from Country table to generate a list of city names with associated population and life expectancy. This is listed in descending order of life expectancy.  
+
 Hope this can be useful to you,
 
 Please, feel free to contact us regarding this project
