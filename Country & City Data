@@ -12,12 +12,13 @@ engine = create_engine('sqlite:////blue/bsc4452/share/Class_Files/data/world.sql
 conn = engine.connect()
 
 # Read the metadata from the existing database.
-#  Since the database already exists and has tables defined, we can create Python objects based on these automatically.
+# Since the database already exists and has tables defined, we can create Python objects based on these automatically.
 DBInfo=MetaData(engine)
 
 # Auto-create the country object based on the metadata read into the DBInfo.
 country=Table('country', DBInfo, autoload=True)
 
+# Generate list of country names with assoicated code, population, and life expectancy from Country table
 # Mirroring this command: SELECT Code, Name, Population, Life Expectancy FROM country;
 query=select([country.c.Code, country.c.Name, country.c.Population, country.c.LifeExpectancy])
 result = conn.execute(query)
@@ -29,6 +30,7 @@ print(type(query))
 # Auto-create the city object based on the metadata read into the DBInfo.
 city=Table('city', DBInfo, autoload=True)
 
+# Generate list of city names with associated country code and population from City table
 # Mirroring this command: SELECT Name, Country Code, Population FROM city;
 query=select([city.c.Name, city.c.CountryCode, city.c.Population])
 result = conn.execute(query)
@@ -37,8 +39,8 @@ for row in result:
     
 print(type(query))
 
-# Mirroring this command:
-# SELECT Name,Population,Life Expectancy FROM city JOIN country ON CountryCode=Code ORDER BY Life Expectancy DESC;
+# Join Country and City tables using Country Code from City table and Code from Country table; generate list of city names with associated population and life expectancy; listed in descending order of life expectancy  
+# Mirroring this command: SELECT Name,Population,Life Expectancy FROM city JOIN country ON CountryCode=Code ORDER BY Life Expectancy DESC;
 
 city=Table('city', DBInfo, autoload=True)
 country=Table('country', DBInfo, autoload=True)
